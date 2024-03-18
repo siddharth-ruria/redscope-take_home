@@ -31,26 +31,38 @@
     const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get("id");
 
-    const apiUrl = `http://localhost:3000/api-rrweb-events?id=${id}`;
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        new rrwebPlayer({
-          target: document.getElementById("replay_video"), // customizable root element
-          props: {
-            events: data,
-            UNSAFE_replayCanvas: false,
-            skipInactive: true,
-            inactiveColor: "rgba(255,167,48,0.98)",
-            showController: true,
-            autoPlay: false,
-            width: 776,
-            height: 164,
-            speed: 8,
-            speedOption: [1, 2, 4, 8, 16],
-          },
-        });
-      })
-      .catch((err) => console.error(err));
+    function fetchAndRender(id) {
+      const apiUrl = `http://localhost:3000/api-rrweb-events?id=${id}`;
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          new rrwebPlayer({
+            target: document.getElementById("replay_video"),
+            props: {
+              events: data,
+              UNSAFE_replayCanvas: false,
+              skipInactive: true,
+              inactiveColor: "rgba(255,167,48,0.98)",
+              showController: true,
+              autoPlay: false,
+              width: 776,
+              height: 164,
+              speed: 8,
+              speedOption: [1, 2, 4, 8, 16],
+            },
+          });
+        })
+        .catch((err) => console.error(err));
+    }
+
+    // --------------------------------- change to check whether 'id' is provided as query in the url ---------------------------------
+
+    if (id) {
+      fetchAndRender(id);
+    } else {
+      console.error("id not provided :/");
+    }
+
+    // --------------------------------- change to check whether 'id' is provided as query in the url ---------------------------------
   </script>
 </html>
